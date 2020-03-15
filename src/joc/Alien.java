@@ -14,6 +14,9 @@ public class Alien extends Player{
     public Alien() {
         System.out.println("He creat un <" + getClass().getName().substring(getClass().getName().indexOf(".")+1) + ">");
     }
-    
+
+    public Alien(String name, int attackPoints, int defensePoints, int life) {
+        super(name, attackPoints, defensePoints, life);
+    }
     
 }

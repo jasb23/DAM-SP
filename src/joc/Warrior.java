@@ -11,9 +11,12 @@ package joc;
  */
 public class Warrior extends Human{
 
+    public Warrior(String name, int attackPoints, int defensePoints, int life) {
+        super(name, attackPoints, defensePoints, life);
+    }
+
     public Warrior() {
         System.out.println("He creat un <" + getClass().getName().substring(getClass().getName().indexOf(".")+1) + "> desde Warrior");
-    }
-    
+    }    
     
 }

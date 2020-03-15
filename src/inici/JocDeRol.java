@@ -23,11 +23,20 @@ public class JocDeRol {
     
     public static void provaFase(){
         
-        System.out.println("Vaig a crear un humanoide");
-        Human humanoide = new Human();
-        System.out.println("Vaig a crear un alienigena");
-        Alien alienigena = new Alien();
-        System.out.println("Vaig a crear un guerrer");
-        Warrior guerrer = new Warrior();
+        //System.out.println("Vaig a crear un humanoide");
+        Human humanoide = new Human("John Smith", 13, 8, 39);
+        //System.out.println("Vaig a crear un guerrer");
+        Warrior guerrer = new Warrior("Brave",100, 30, 85);
+        //System.out.println("Vaig a crear un alienigena");
+        Alien alienigena = new Alien("Martian PK", 27, 2, 32);
+        
+        System.out.println("//  ABANS DE L'ATAC:");
+        System.out.println("Atacant: " + humanoide.toString());
+        System.out.println("Atacat: " + alienigena.toString());
+        humanoide.attack(alienigena);
+        System.out.println("//  DESPRÉS DE L'ATAC:");
+        System.out.println("Atacant: " + humanoide.toString());
+        System.out.println("Atacat: " + alienigena.toString());
+        
     }
 }
