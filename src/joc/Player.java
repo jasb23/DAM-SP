@@ -43,16 +43,22 @@ public abstract class Player {
     
     //mètodes
     public void attack(Player p){
-        p.hit(this.getAttackPoints());
-        if (p.getLife()> 0)
+        if (p.getLife() > 0){
+            p.hit(this.getAttackPoints());
+            if (p.getLife()> 0)
                 this.hit(p.getAttackPoints());
+        }
+        else
+                System.out.println("ATENCIÓ: " + p.getName() + " no pot ser atacat, ja està mort!");
     }
     
     protected void hit(int attack){
-        System.out.println(this.getName() + " es colpejat amb " + attack + " punts i es defen amb " + this.getDefensePoints() + ". Vides: " + this.getLife() + " - " + (attack - this.getDefensePoints()) + " = " + (this.getLife() - attack + this.getDefensePoints()) );
-        this.life -= attack - this.getDefensePoints();
-        if (this.life < 0) 
-                this.life =0;
+        int vides = this.life - (attack - this.getDefensePoints());
+        if (vides < 0) vides = 0;
+        System.out.println(this.getName() + " es colpejat amb " + attack + " punts i es defen amb " + this.getDefensePoints() + ". Vides: " + this.getLife() + " - " + (attack - this.getDefensePoints()) + " = " + vides );
+        this.life =vides;     
+        if (this.life <= 0)
+                  System.out.println(this.getName() + " ha mort !!");
     }
     
     @Override

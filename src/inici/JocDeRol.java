@@ -21,22 +21,39 @@ public class JocDeRol {
         provaFase();
     }
     
+    private static void atacar(Player A, Player B){
+        System.out.println("//  ABANS DE L'ATAC:");
+        System.out.println("Atacant: " + A.toString());
+        System.out.println("Atacat: " + B.toString());
+        A.attack(B);
+        System.out.println("//  DESPRÉS DE L'ATAC:");
+        System.out.println("Atacant: " + A.toString());
+        System.out.println("Atacat: " + B.toString());
+        
+    }
     public static void provaFase(){
         
         //System.out.println("Vaig a crear un humanoide");
-        Human humanoide = new Human("John Smith", 13, 8, 39);
+        Human humanoid = new Human("John Smith", 13, 8, 39);
         //System.out.println("Vaig a crear un guerrer");
         Warrior guerrer = new Warrior("Brave",100, 30, 85);
         //System.out.println("Vaig a crear un alienigena");
         Alien alienigena = new Alien("Martian PK", 27, 2, 32);
         
-        System.out.println("//  ABANS DE L'ATAC:");
-        System.out.println("Atacant: " + humanoide.toString());
-        System.out.println("Atacat: " + alienigena.toString());
-        humanoide.attack(alienigena);
-        System.out.println("//  DESPRÉS DE L'ATAC:");
-        System.out.println("Atacant: " + humanoide.toString());
-        System.out.println("Atacat: " + alienigena.toString());
+        System.out.println("************ ATAC 1 *************");
+        atacar(humanoid, alienigena);        
+        System.out.println("");
         
+        System.out.println("************ ATAC 2 *************");        
+        atacar(guerrer, alienigena);        
+        System.out.println("");
+        
+        System.out.println("************ ATAC 3 *************");        
+        atacar(guerrer, humanoid);
+        System.out.println("");        
+        
+        System.out.println("************ ATAC 4 *************");        
+        atacar(guerrer, humanoid);
+        System.out.println("");
     }
 }
