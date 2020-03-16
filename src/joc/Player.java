@@ -43,9 +43,9 @@ public abstract class Player {
     
     //mètodes
     public void attack(Player p){
-        /*p.hit(this.getAttackPoints());
+        p.hit(this.getAttackPoints());
         if (p.getLife()> 0)
-                this.hit(p.getAttackPoints());*/
+                this.hit(p.getAttackPoints());
     }
     
     protected void hit(int attack){

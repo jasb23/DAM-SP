@@ -19,10 +19,5 @@ public class Human extends Player{
         super(name, attackPoints, defensePoints, life);
     }        
     
-    //mètodes
-    public void attack(Player p){
-        p.hit(this.getAttackPoints());
-        if (p.getLife()> 0)
-                this.hit(p.getAttackPoints());
-    }
+    //mètodes    
 }
