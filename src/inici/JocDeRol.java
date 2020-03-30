@@ -36,9 +36,9 @@ public class JocDeRol {
         //System.out.println("Vaig a crear un humanoide");
         Human humanoid = new Human("John Smith", 13, 8, 39);
         //System.out.println("Vaig a crear un guerrer");
-        Warrior guerrer = new Warrior("Brave",100, 30, 85);
+        Warrior guerrer = new Warrior("Brave",10, 25, 85);
         //System.out.println("Vaig a crear un alienigena");
-        Alien alienigena = new Alien("Martian PK", 27, 2, 32);
+        Alien alienigena = new Alien("Martian PK", 27, 2, 35);
         
         System.out.println("************ ATAC 1 *************");
         atacar(humanoid, alienigena);        

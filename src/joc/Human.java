@@ -19,5 +19,6 @@ public class Human extends Player{
         super(name, attackPoints, defensePoints, life);
     }        
     
-    //mètodes    
+    //mètodes
+    
 }
