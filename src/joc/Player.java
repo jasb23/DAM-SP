@@ -5,6 +5,9 @@
  */
 package joc;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  *
  * @author damsp
@@ -12,6 +15,7 @@ package joc;
 public abstract class Player {
     private String name;
     int attackPoints, defensePoints, life;
+    private ArrayList<Team> teams;
     
     // constructores
     public Player() {
@@ -27,6 +31,7 @@ public abstract class Player {
             this.attackPoints = attackPoints;
             this.defensePoints = defensePoints;
             this.life = life;
+            this.teams = new ArrayList<>();           
         }
     }
     // getters
@@ -64,8 +69,34 @@ public abstract class Player {
         if (life < 0) life = 0;
         this.life = life;
     }
+
+    public ArrayList<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(ArrayList<Team> teams) {
+        this.teams = teams;
+    }
     
+    public void add(Team t){
+        // comprovar que no pertanya ja a l'equip!
+        boolean exist = false;
+
+        for (Team t1 : this.teams) {
+            if (t1 == t) {
+                exist = true;
+            }
+        }
+        if (!exist) {
+            this.teams.add(t);
+            t.add(this);
+        }
+    }
     
+    public void remove(Team t){
+        if (this.teams != null)
+                this.teams.remove(t);
+    } 
     
     //mètodes
     public void attack(Player p){
@@ -100,6 +131,35 @@ public abstract class Player {
     
     @Override
     public String toString(){
-        return this.getName() + " >> " + "PA:" + this.getAttackPoints()+ "  /  " + "PD:" + this.getDefensePoints() + "  /  " + "PV:" + this.getLife();
+        return this.getName() + " >> " + "PA:" + this.getAttackPoints()+ "  /  " + "PD:" + this.getDefensePoints() + "  /  " + "PV:" + this.getLife() + " (pertany a " + this.getTeams().size() + " equips)";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Player other = (Player) obj;
+        if (this.attackPoints != other.attackPoints) {
+            return false;
+        }
+        if (this.defensePoints != other.defensePoints) {
+            return false;
+        }
+        if (this.life != other.life) {
+            return false;
+        }
+        if (this.name.compareTo(other.name) != 0) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }
