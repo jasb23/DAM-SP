@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  *
- * @author damsp
+ * @author jasb
  */
 public class Team {
     private String name;
@@ -29,14 +29,6 @@ public class Team {
         this.name = name;
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
     public void add(Player p){
         // comprovar que no pertanya ja!
         boolean exist = false;
@@ -50,18 +42,44 @@ public class Team {
         }
     }
     
-    public void remove(Player p){
-        if (this.players != null){
-            this.players.remove(p);
-            p.remove(this);
+    public void remove(Player p) throws rolExceptions{
+
+        boolean esta = false;
+        for (Player p_aux : this.players){
+            if (p_aux == p){
+                esta = true;                
+                break;
+            }
         }
+        
+        if (esta)
+        {
+            this.players.remove(p); 
+            if (Thread.currentThread().getStackTrace()[2].getMethodName().compareTo("remove") != 0)
+                p.remove(this);
+        }else
+            throw new rolExceptions("No es posible llevar un jugador que no pertany a un equipo !!");
     }
         
     public void getMembers(){
         for (Player p:this.players)
             p.toString();
     }
-            
+
+    public ArrayList<Player> getPlayers() throws rolExceptions {
+        for (Player p:this.players){
+            int n=0;
+            for (Player p2:this.players){
+                if (p.equals(p2))
+                    n += 1;
+            }         
+            if (n>1) 
+                throw new rolExceptions("Un equip no pot tenir jugadors repetits");
+        }
+        return this.players;
+    }
+    
+    
     @Override
     public String toString() {
         String txt="";

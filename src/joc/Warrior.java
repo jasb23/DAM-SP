@@ -7,12 +7,12 @@ package joc;
 
 /**
  *
- * @author damsp
+ * @author jasb
  */
 public class Warrior extends Human{
 
-    public Warrior(String name, int attackPoints, int defensePoints, int life) {
-        super(name, attackPoints, defensePoints, life);
+    public Warrior(String name, int attackPoints, int defensePoints) {
+        super(name, attackPoints, defensePoints);
     }
 
     public Warrior() {
@@ -23,7 +23,7 @@ public class Warrior extends Human{
     //Si el colp no
     //és superior a 5 punts, aquest queda reduït a 0. El colp (hit) és la diferència entre l’atac que sofrix
     ///i la defensa del jugador.
-    public void attack(Player p){
+    public void attack(Player p)throws rolExceptions{
         if (p.getLife() > 0){
             p.hit(this.getAttackPoints());
             if (p.getLife()> 0)
@@ -33,6 +33,6 @@ public class Warrior extends Human{
                     this.hit(0);
         }
         else
-            System.out.println("ATENCIÓ: " + p.getName() + " no pot ser atacat, ja està mort!");
+            throw new rolExceptions("Un jugador mort no pot ser atacat !!");
     }
 }

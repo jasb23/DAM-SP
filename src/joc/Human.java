@@ -7,7 +7,7 @@ package joc;
 
 /**
  *
- * @author damsp
+ * @author jasb
  */
 public class Human extends Player{
 
@@ -15,8 +15,8 @@ public class Human extends Player{
         System.out.println("He creat un <" + getClass().getName().substring(getClass().getName().indexOf(".")+1) + "> desde Human");
     }
 
-    public Human(String name, int attackPoints, int defensePoints, int life) {
-        super(name, attackPoints, defensePoints, life);
+    public Human(String name, int attackPoints, int defensePoints) {
+        super(name, attackPoints, defensePoints);
     }        
     
     //mètodes

@@ -7,7 +7,7 @@ package joc;
 
 /**
  *
- * @author damsp
+ * @author jasb
  */
 public class Alien extends Player{
 
@@ -15,36 +15,51 @@ public class Alien extends Player{
         System.out.println("He creat un <" + getClass().getName().substring(getClass().getName().indexOf(".")+1) + ">");
     }
 
-    public Alien(String name, int attackPoints, int defensePoints, int life) {
-        super(name, attackPoints, defensePoints, life);
+    public Alien(String name, int attackPoints, int defensePoints) {
+        super(name, attackPoints, defensePoints);
     }
     
     // Sobrecàrrega de mètodes
-    /*public void attack(Player p){        
-        if (p.getLife() > 0){
-            if (this.getLife() > 20) 
-                this.setAttackPoints(this.getAttackPoints() + 3);
-            
-            p.hit(this.getAttackPoints());
-            if (p.getLife()> 0)
-                this.hit(p.getAttackPoints());
-        }
-        else
-            System.out.println("ATENCIÓ: " + p.getName() + " no pot ser atacat, ja està mort!");
-    }*/
-    
     @Override
     protected void hit(int attack){
+        int bonusDefensa = 0;  
+        for (Item arma: this.getItems())
+            bonusDefensa += arma.getDefenseBonus();
+        
         if (this.getLife() > 20)
                 this.setDefensePoints(this.getDefensePoints() - 3);
          
-        int defensa = this.getDefensePoints();
-        int vides = this.life - (attack - defensa);
+        int defensa = this.getDefensePoints() + bonusDefensa;
+        if (defensa < 0) defensa = 0;
+        if (attack < 0) attack = 0;
+        
+        int vides = this.life;
+         if (attack > 0)
+        {
+            if (attack >= defensa)
+                vides -= (attack - defensa);       
+            else
+                vides -= 1;
+        }
+                
+        
         if (vides < 0) vides = 0;
-        System.out.println(this.getName() + " es colpejat amb " + attack + " punts i es defen amb " + defensa + ". Vides: " + this.getLife() + " - " + (attack - defensa) + " = " + vides );
+         
+        int colp;
+        if (attack >= defensa)
+            colp = attack - defensa;
+        else 
+            colp = 1;
+        
+        if (attack == 0) colp = 0;
+       
+        
+        System.out.println(this.getName() + " es colpejat amb " + attack + " punts i es defen amb " + defensa + ". Vides: " + this.getLife() + " - " + colp + " = " + vides );
         this.life = vides;     
-        if (this.life <= 0)
-                  System.out.println(this.getName() + " ha mort !!");
+        if (this.life <= 0){
+            this.ranking = this.vius;    
+            this.vius -= 1;
+            System.out.println(this.getName() + " ha mort !!");
+        }
     }
-    
 }
