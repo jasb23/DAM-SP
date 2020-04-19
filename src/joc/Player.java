@@ -44,6 +44,18 @@ public class Player implements Comparable{
             this.ranking = 1;
         }
     }
+
+    public Player(String name, int attackPoints, int defensePoints, int life) {
+        this.name = name;
+        this.attackPoints = attackPoints;
+        this.defensePoints = defensePoints;
+        this.life = life;
+        this.teams = new ArrayList<>();                       
+        this.items = new ArrayList<>();    
+        vius += 1;
+        this.ranking = 1;
+    }
+    
     // getters
     public String getName() {
         return name;
@@ -243,13 +255,13 @@ public class Player implements Comparable{
         else{
             textArmes = " i té els items:";
             for (Item arma: this.items){
-                String txt = "\n - " + arma.getName() + " BA:" + arma.getAttatckBonus() + " / BD:"+ arma.getDefenseBonus();                
+                String txt = "\n" + arma.toString();                
                 textArmes = textArmes + txt;                
             }
         }
           
         try {
-            return this.getName() + " >> " + "PA:" + this.getAttackPoints()+ "  /  " + "PD:" + this.getDefensePoints() + "  /  " + "PV:" + this.getLife() + " (pertany a " + this.getTeams().size() + " equips)" + textArmes;
+            return "\u001B[32m" + this.getName() + "\u001B[0m" + " >> " + "PA:" + this.getAttackPoints()+ "  /  " + "PD:" + this.getDefensePoints() + "  /  " + "PV:" + this.getLife() + " (pertany a " + this.getTeams().size() + " equips)" + textArmes;
         } catch (rolExceptions ex) {
             System.err.println(ex);
         }

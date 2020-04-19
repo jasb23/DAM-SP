@@ -88,7 +88,7 @@ public class Team {
         
         if (txt == "")
                 txt = "No te membres";
-        return "\nEquip " + this.name + ": " + txt;
+        return "\033[34m" + "\nEquip " + this.name + ": " + "\u001B[0m" + txt;
     }
 
     @Override

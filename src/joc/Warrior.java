@@ -19,6 +19,9 @@ public class Warrior extends Human{
         System.out.println("He creat un <" + getClass().getName().substring(getClass().getName().indexOf(".")+1) + "> desde Warrior");
     }    
     
+    public Warrior(String name, int attackPoints, int defensePoints, int life) {
+        super(name, attackPoints, defensePoints, life);
+    }
     
     //Si el colp no
     //és superior a 5 punts, aquest queda reduït a 0. El colp (hit) és la diferència entre l’atac que sofrix

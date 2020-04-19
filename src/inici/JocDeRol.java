@@ -21,38 +21,32 @@ import joc.*;
  */
 public class JocDeRol {
 
+    public static final String RESET = "\u001B[0m";
+    public static final String VERDE = "\033[32m";
+    public static final String MORADO = "\033[35m";
+    public static final String AZUL = "\033[34m";        
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        ArrayList<Player> jugadors = new ArrayList<>();
-        ArrayList<Team> equips = new ArrayList<>();
-        ArrayList<Item> armes = new ArrayList<>();
-
+        
         int opcio;
         do {
             opcio = -1;
-            System.out.println("\n**** M E N Ú   P R I N C I P A L ****\n");
-            System.out.println("1. Configuració");
-            System.out.println("2. Jugar");
-            System.out.println("3. Eixir");
-            opcio = leerEntero("\nIntrodueix una opcio (1-3): ");
-            
-            // generaTest(jugadors, equips, armes);  // Cridant a aquest mètode es genera un joc de proves amb jugadors, equips i objectes, tots ells ja interrelaconats
-            
+            System.out.println("\n" + MORADO + "\t\t\t**** M E N Ú   I N I C I A L  -J O C  D E  R O L- ****\n"+RESET);
+            System.out.println("\t\t\t\t1. Iniciar joc pre-configurat");
+            System.out.println("\t\t\t\t2. Iniciar nou joc");
+            System.out.println("\t\t\t\t3. Eixir");
+            opcio = leerEntero("\n\t\t\tIntrodueix una opcio (1-3): ");
+
             switch (opcio) {
-                case 1:                    
-                    configuracio(jugadors, equips, armes);
+                case 1:
+                    generarJocDeProves();  // Cridant a aquest mètode es genera un joc de proves amb jugadors, equips i objectes, tots ells ja interrelacionats                                        
                     break;
                 case 2:
-                    boolean fin = jugar(jugadors, equips, armes);
-                    if (fin) {
-                        System.out.println("\nFi del joc");
-                        return;
-                    } else {
-                        break;
-                    }
+                    nouJoc();
+                    break;
                 case 3:
                     System.out.println("\nFi del joc");
                     break;
@@ -64,16 +58,46 @@ public class JocDeRol {
 
     }
 
+    private static void nouJoc() {
+        ArrayList<Player> jugadors = new ArrayList<>();
+        ArrayList<Team> equips = new ArrayList<>();
+        ArrayList<Item> armes = new ArrayList<>();
+        
+        int opcio;
+        do {
+            opcio = -1;
+            System.out.println("\n" + MORADO + "\t\t\t**** M E N Ú   P R I N C I P A L ****\n"+RESET);
+            System.out.println("\t\t\t\t1. Configuració");
+            System.out.println("\t\t\t\t2. Jugar");            
+            System.out.println("\t\t\t\t3. Eixir");
+            opcio = leerEntero("\n\t\t\tIntrodueix una opcio (1-3): ");
+
+            switch (opcio) {
+                case 1:
+                    configuracio(jugadors, equips, armes);
+                    break;
+                case 2:
+                    jugar(jugadors,equips, armes);
+                    break;                
+                case 3:
+                    break;
+                default:
+                    System.err.println("\nOpcio incorrecta");
+                    break;
+            }
+        } while (opcio != 3);
+    }
+
     private static void configuracio(ArrayList<Player> jugadors, ArrayList<Team> equips, ArrayList<Item> armes) {
         int opcio;
         do {
             opcio = -1;
-            System.out.println("\n\n**** M E N Ú   C O N F I G U R A C I Ó ****\n");
-            System.out.println("1. Gestió jugadors");
-            System.out.println("2. Gestió equips");
-            System.out.println("3. Gestió objectes");
-            System.out.println("4. Eixir");
-            opcio = leerEntero("\nIntrodueix una opcio (1-4): ");
+            System.out.println("\n" + MORADO + "\t\t\t**** M E N Ú   C O N F I G U R A C I Ó ****\n" +RESET);
+            System.out.println("\t\t\t\t1. Gestió jugadors");
+            System.out.println("\t\t\t\t2. Gestió equips");
+            System.out.println("\t\t\t\t3. Gestió objectes");
+            System.out.println("\t\t\t\t4. Eixir");
+            opcio = leerEntero("\n\t\t\tIntrodueix una opcio (1-4): ");
 
             switch (opcio) {
                 case 1:
@@ -93,6 +117,7 @@ public class JocDeRol {
             }
         } while (opcio != 4);
     }
+
 
     /*
      * Normes: 1) En ordre, cada jugador de la llista realitza un atac a altre
@@ -118,30 +143,30 @@ public class JocDeRol {
         while (nVius > 1) {
             try {
                 nFase += 1;
-                System.out.println("\n\n************ RONDA D'ATAC Nº " + nFase + " *************");
+                System.out.println("\n\n************ " + MORADO + "RONDA D'ATAC Nº " + nFase + RESET + " *************");
                 for (Player p : jugadors) {
                     nVius = comprovarVius(jugadors);
                     if ((p.getLife() > 0) && (nVius > 1)) {
                         nAtac += 1;
                         Player rival = obtenirRival(p, jugadors);
-                        System.out.println("\n\n************ Atac " + nAtac + " *************");                        
-                        atacar(p, rival);                                                    
+                        System.out.println("\n\n************ " + AZUL + "Atac " + nAtac + RESET + " *************");
+                        atacar(p, rival);
                         System.out.println("");
                         Thread.sleep(350);
                     }
                 }
                 nVius = comprovarVius(jugadors);
-            } catch (InterruptedException | rolExceptions ex ) {
+            } catch (InterruptedException | rolExceptions ex) {
                 System.err.println(ex);
             }
         }
 
         /* Ordenar i mostrar ranking dels jugadors*/
-        ArrayList<Player> ranking = ordenar(jugadors);        
-        System.out.println("L'únic jugador viu i, per tant, guanyador del joc és " + ranking.get(0).getName());
+        ArrayList<Player> ranking = ordenar(jugadors);
+        System.out.println("L'únic jugador viu i, per tant, guanyador del joc és " + VERDE + ranking.get(0).getName()+ RESET);
         return true;
     }
-    
+
     private static void gestioJugadors(ArrayList<Player> jugadors, ArrayList<Team> equips, ArrayList<Item> armes) {
         int opcio;
 
@@ -150,14 +175,14 @@ public class JocDeRol {
             ArrayList<Object> lista = new ArrayList<>(jugadors);
             boolean ok = false;
 
-            System.out.println("\n**** M E N Ú   C O N F I G U R A C I Ó ****\n");
-            System.out.println("1. Crear jugador");
-            System.out.println("2. Mostrar jugadors");
-            System.out.println("3. Esborrar jugador");
-            System.out.println("4. Assignar jugador a equips");
-            System.out.println("5. Assignar objecte a jugador");
-            System.out.println("6. Eixir");
-            opcio = leerEntero("\nIntrodueix una opcio (1-6): ");
+            System.out.println("\n" + MORADO + "\t\t\t**** G E S T I Ó   J U G A D O R S ****\n" +RESET);
+            System.out.println("\t\t\t\t1. Crear jugador");
+            System.out.println("\t\t\t\t2. Mostrar jugadors");
+            System.out.println("\t\t\t\t3. Esborrar jugador");
+            System.out.println("\t\t\t\t4. Assignar jugador a equips");
+            System.out.println("\t\t\t\t5. Assignar objecte a jugador");
+            System.out.println("\t\t\t\t6. Eixir");
+            opcio = leerEntero("\n\t\t\tIntrodueix una opcio (1-6): ");
 
             switch (opcio) {
                 case 1:
@@ -198,7 +223,7 @@ public class JocDeRol {
                                         tmp.remove(tmp.getTeams().get(0));
                                     }
                                 }
-                                
+
                                 /* hay que elimnar las relaciones entre el jugador eliminado y sus objetos, si tiene */
                                 if (tmp.getItems() != null) {
                                     int nItems = tmp.getItems().size();
@@ -206,7 +231,7 @@ public class JocDeRol {
                                         tmp.remove(tmp.getItems().get(0));
                                     }
                                 }
-                                
+
                                 jugadors.remove(tmp);
                                 ok = true;
                                 break;
@@ -280,13 +305,13 @@ public class JocDeRol {
             ArrayList<Object> lista = new ArrayList<>(equips);
             boolean ok = false;
 
-            System.out.println("\n**** M E N Ú   C O N F I G U R A C I Ó ****\n");
-            System.out.println("1. Crear equip");
-            System.out.println("2. Mostrar equips");
-            System.out.println("3. Esborrar equip");
-            System.out.println("4. Assignar equip a jugador");
-            System.out.println("5. Eixir");
-            opcio = leerEntero("\nIntrodueix una opcio (1-5): ");
+            System.out.println("\n" + MORADO + "\t\t\t**** G E S T I Ó   E Q U I P S ****\n" +RESET);
+            System.out.println("\t\t\t\t1. Crear equip");
+            System.out.println("\t\t\t\t2. Mostrar equips");
+            System.out.println("\t\t\t\t3. Esborrar equip");
+            System.out.println("\t\t\t\t4. Assignar equip a jugador");
+            System.out.println("\t\t\t\t5. Eixir");
+            opcio = leerEntero("\n\t\t\tIntrodueix una opcio (1-5): ");
 
             switch (opcio) {
                 case 1:
@@ -329,7 +354,7 @@ public class JocDeRol {
                                         /* siempre tendré que eliminar el primero, si hay, ya que los objetos actualizan los indices de la la lista de players */
                                     }
                                 }
-                                
+
                                 equips.remove(tmp);
                                 ok = true;
                                 break;
@@ -381,13 +406,13 @@ public class JocDeRol {
             ArrayList<Object> lista = new ArrayList<>(armes);
             boolean ok = false;
 
-            System.out.println("\n**** M E N Ú   C O N F I G U R A C I Ó ****\n");
-            System.out.println("1. Crear objecte");
-            System.out.println("2. Mostrar objectes");
-            System.out.println("3. Esborrar objecte");
-            System.out.println("4. Assignar objecte a jugador");
-            System.out.println("5. Eixir");
-            opcio = leerEntero("\nIntrodueix una opcio (1-5): ");
+            System.out.println("\n" + MORADO + "\t\t\t**** G E S T I Ó   O B J E C T E S ****\n" +RESET);
+            System.out.println("\t\t\t\t1. Crear objecte");
+            System.out.println("\t\t\t\t2. Mostrar objectes");
+            System.out.println("\t\t\t\t3. Esborrar objecte");
+            System.out.println("\t\t\t\t4. Assignar objecte a jugador");
+            System.out.println("\t\t\t\t5. Eixir");
+            opcio = leerEntero("\n\t\t\tIntrodueix una opcio (1-5): ");
 
             switch (opcio) {
                 case 1:
@@ -617,26 +642,44 @@ public class JocDeRol {
     private static void mostrar(ArrayList<Object> lista, char tipus) {
         Iterator<Object> it = lista.iterator();
         Object tmp = null;
-
+        String txt="", color="";
+        
+        if (tipus == 'J'){
+            txt= "de JUGADORS";
+            color=VERDE;
+        }
+        if (tipus == 'E'){
+            txt= "d'EQUIPS";
+            color=AZUL;
+        }
+        if (tipus == 'O'){
+            txt= "d'OBJECTES";
+            color=MORADO;
+        }
+        
+        System.out.println("\n\n"+color+"****************************** LLISTA " + txt + " ****************************"+RESET);
+        
         while (it.hasNext()) {
             switch (tipus) {
-                case 'J':
+                case 'J':                    
                     tmp = (Player) it.next();
                     break;
-                case 'E':
+                case 'E':                    
                     tmp = (Team) it.next();
                     break;
-                case 'O':
+                case 'O':                    
                     tmp = (Item) it.next();
                     break;
                 default:
                     System.out.println("\n No es pot mostrar la llista.");
                     break;
             }
-            System.out.println("\n");
+            //System.out.println("\n");           
             System.out.println(tmp);
+           
         }
-    }    
+         System.out.println(color+"******************************************************************************"+RESET);
+    }
 
     public static ArrayList<Player> ordenar(ArrayList<Player> jugadores) {
 
@@ -675,26 +718,25 @@ public class JocDeRol {
         }
         return vius;
     }
-    
-/**
- * 
- *   A partir d'aquest pun trobarem mètodes per a fer proves de la funcionalitas
- *   del joc.
- */
-    
+
+    /**
+     *
+     * A partir d'aquest pun trobarem mètodes per a fer proves de la
+     * funcionalitas del joc.
+     */
     public static void provaFase() {
 
         try {
-            
+
             //System.out.println("Vaig a crear un humanoide");
             Human humanoid = new Human("John Smith", 13, 8);
-            
+
             //System.out.println("Vaig a crear un guerrer");
             Warrior guerrer = new Warrior("Brave", 10, 25);
-            
+
             //System.out.println("Vaig a crear un alienigena");
             Alien alienigena = new Alien("Martian PK", 27, 2);
-            
+
             // Creació de les armes (items)
             Item espada = new Item("Espada", 10, 2);
             Item latigo = new Item("Látigo", 6, -5);
@@ -702,36 +744,38 @@ public class JocDeRol {
             Item escudo = new Item("Escudo", -3, 12);
             Item molotov = new Item("Cóctel molotov", -7, 7);
             Item veneno = new Item("Veneno", 6, -6);
-            
+
             // Dotar d'armes als jugadors
             /**
-             * humanoid (John Smith) : latigo + escudo --> bonus ataque = 3, bonus
-             * defensa = 7 guerrer (Brave) : espada + gafas + molotov --> bonus
-             * ataque = 8 bonus defensa = 4 alienigena (Martian PK): veneno -->
-             * bonus ataque = 6 bonus defensa = -6
+             * humanoid (John Smith) : latigo + escudo --> bonus ataque = 3,
+             * bonus defensa = 7 guerrer (Brave) : espada + gafas + molotov -->
+             * bonus ataque = 8 bonus defensa = 4 alienigena (Martian PK):
+             * veneno --> bonus ataque = 6 bonus defensa = -6
              */
             guerrer.add(espada);
             guerrer.add(latigo);
-            humanoid.add(latigo); /* No l'ha de poder asignar */
-            guerrer.remove(gafas); /* No l'ha de poder llevar, no és el propietari*/
+            humanoid.add(latigo);
+            /* No l'ha de poder asignar */
+            guerrer.remove(gafas);
+            /* No l'ha de poder llevar, no és el propietari*/
             guerrer.remove(latigo);
             humanoid.add(latigo);
             guerrer.add(gafas);
             guerrer.add(molotov);
             alienigena.add(veneno);
             humanoid.add(escudo);
-            
+
             Team equipA = new Team("Flipats");
             Team equipB = new Team("Guais");
             Team equipC = new Team("Carabasses");
-            
+
             humanoid.add(equipA);
             equipA.add(guerrer);
             equipB.add(humanoid);
             guerrer.add(equipB);
             humanoid.add(equipA);
             equipB.add(guerrer);
-            
+
             System.out.println("Mostrar jugadores del equipo A");
             try {
                 for (Player p : equipA.getPlayers()) {
@@ -740,101 +784,184 @@ public class JocDeRol {
             } catch (rolExceptions ex) {
                 System.err.println(ex);
             }
-            
+
             System.out.println("***** LLISTA D'EQUIPS *****");
             System.out.println(equipA);
             System.out.println(equipB);
             System.out.println(equipC);
-            
+
             System.out.println("\n***** LLISTA DE JUGADORS *****");
             System.out.println(humanoid);
             System.out.println(guerrer);
             System.out.println(alienigena);
-            
+
             equipC.remove(humanoid);
             guerrer.remove(equipB);
-            
+
             System.out.println("***** LLISTA D'EQUIPS *****");
             System.out.println(equipA);
             System.out.println(equipB);
             System.out.println(equipC);
-            
+
             System.out.println("\n***** LLISTA DE JUGADORS *****");
             System.out.println(humanoid);
             System.out.println(guerrer);
             System.out.println(alienigena);
-            
+
             iniciarBatalla(humanoid, guerrer, alienigena);
         } catch (rolExceptions ex) {
             System.err.println(ex);
         }
     }
-    
+
+    private static void generarJocDeProves() {
+        ArrayList<Player> jugadors = new ArrayList<>();
+        ArrayList<Team> equips = new ArrayList<>();
+        ArrayList<Item> armes = new ArrayList<>();
+                
+        try {            
+
+            System.out.print("\n" + AZUL + "Generant jugadors, equips i objetes"+RESET);
+            for (int i = 0; i < 10; i++) {
+                Thread.sleep(500);
+                System.out.print(AZUL +"."+RESET);
+            }
+
+            generarJoc(jugadors, equips, armes);
+
+            System.out.println(VERDE +"  ¡Generació completada! \n"+RESET);
+            Thread.sleep(1000);
+            
+            int opcio;
+            do {
+                ArrayList<Object> lista = new ArrayList<>();
+                opcio = -1;
+                System.out.println("\n" + MORADO + "\t\t\t**** M E N Ú   J O C   D E   P R O V E S ****\n" +RESET);
+                System.out.println("\t\t\t\t1. Mostrar jugadors");
+                System.out.println("\t\t\t\t2. Mostrar equips");
+                System.out.println("\t\t\t\t3. Mostrar objectes");
+                System.out.println("\t\t\t\t4. Jugar");
+                System.out.println("\t\t\t\t5. Eixir");
+                opcio = leerEntero("\n\t\t\tIntrodueix una opcio (1-5): ");
+
+                switch (opcio) {
+                    case 1:
+                        lista = new ArrayList<>(jugadors);
+                        mostrar(lista, 'J');
+                        break;
+                    case 2:
+                        lista = new ArrayList<>(equips);
+                        mostrar(lista, 'E');
+                        break;
+                    case 3:
+                        lista = new ArrayList<>(armes);
+                        mostrar(lista, 'O');
+                        break;
+                    case 4:
+                        jugar(jugadors, equips, armes);
+                        return;
+                    case 5:
+                        return;
+                    default:
+                        System.err.println("\nOpcio incorrecta");
+                        break;
+                }
+            } while (opcio != 5);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JocDeRol.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /* Mètode utilitzat per a crear jugadors, equipos i relacionar-los. */
-    public static void generaTest(ArrayList<Player> jugadors, ArrayList<Team> equips, ArrayList<Item> armes) {
-       
-        Human messi = new Human("Messi", 25, 8);
-        Human suarez = new Human("Suarez", 13, 2);
+    public static void generarJoc(ArrayList<Player> jugadors, ArrayList<Team> equips, ArrayList<Item> armes) {
 
-        
-        Warrior benzema = new Warrior("Benzema", 68, 45);
-        Warrior hazard = new Warrior("Hazard", 27, 15);
-        Warrior poli = new Warrior("Poli", 100, 50);
+        int pa = (int) (Math.random() * 80) + 1;
+        int pd = 100 - pa;
+        int vi = (int) (Math.random() * 100) + 1;
+        Human h1 = new Human("Huma 1", pa, pd, vi);
 
-       
-        Alien parejo = new Alien("Parejo", 72, 28);
-        Alien gaya = new Alien("Gaya", 28, 23);
+        pa = (int) (Math.random() * 80) + 1;
+        pd = 100 - pa;
+        vi = (int) (Math.random() * 100) + 1;
+        Human h2 = new Human("Huma 2", pa, pd, vi);
 
-        Team Valencia = new Team("Valencia");
-        Team Barça = new Team("Barça");
-        Team Madrid = new Team("Madrid");
-        
-        // Creació de les armes (items)
-        Item espada = new Item("Espada", 10, 2);
+        pa = (int) (Math.random() * 80) + 1;
+        pd = 100 - pa;
+        vi = (int) (Math.random() * 100) + 1;
+        Warrior w1 = new Warrior("Guerrer 1", pa, pd, vi);
+
+        pa = (int) (Math.random() * 80) + 1;
+        pd = 100 - pa;
+        vi = (int) (Math.random() * 100) + 1;
+        Warrior w2 = new Warrior("Guerrer 2", pa, pd, vi);
+
+        pa = (int) (Math.random() * 80) + 1;
+        pd = 100 - pa;
+        vi = (int) (Math.random() * 100) + 1;
+        Warrior w3 = new Warrior("Guerrer 3", pa, pd, vi);
+
+        pa = (int) (Math.random() * 80) + 1;
+        pd = 100 - pa;
+        vi = (int) (Math.random() * 100) + 1;
+        Alien a1 = new Alien("Alienigena 1", pa, pd, vi);
+
+        pa = (int) (Math.random() * 80) + 1;
+        pd = 100 - pa;
+        vi = (int) (Math.random() * 100) + 1;
+        Alien a2 = new Alien("Alienigena 2", pa, pd, vi);
+
+        Team aliens = new Team("Els Aliens");
+        Team terricoles = new Team("Els Terrícoles");
+        Team guerrers = new Team("Els Guerrers");
+
+        // Creació de les armes (objectes)
+        Item k47 = new Item("Metralladora AK-47", 10, 4);
+        Item espada = new Item("Espasa", 8, 2);
         Item latigo = new Item("Látigo", 6, -5);
-        Item gafas = new Item("Gafas laser", 5, -5);
-        Item escudo = new Item("Escudo", -3, 12);
+        Item gafas = new Item("Ulleres laser", 5, -5);
+        Item escudo = new Item("Escut", -3, 12);
         Item molotov = new Item("Cóctel molotov", -7, 7);
-        Item veneno = new Item("Veneno", 6, -6);
+        Item veneno = new Item("Verí mortal", 6, -6);
 
-        messi.add(Barça);
-        Barça.add(suarez);
-        Valencia.add(parejo);
-        gaya.add(Valencia);
-        benzema.add(Madrid);
-        Madrid.add(hazard);
-        poli.add(Barça);
-        poli.add(Valencia);
-        poli.add(Madrid);
-        
-        messi.add(gafas);
-        benzema.add(escudo);
-        poli.add(veneno);
-        parejo.add(molotov);
-        benzema.add(latigo);
-        gaya.add(espada);
+        h1.add(terricoles);
+        terricoles.add(h2);
+        guerrers.add(w1);
+        w2.add(guerrers);
+        a1.add(aliens);
+        aliens.add(a2);
+        w3.add(terricoles);
+        w3.add(aliens);
+        w3.add(guerrers);
 
-        jugadors.add(messi);
-        jugadors.add(suarez);
-        jugadors.add(parejo);
-        jugadors.add(gaya);
-        jugadors.add(benzema);
-        jugadors.add(hazard);
-        jugadors.add(poli);
+        jugadors.add(h1);
+        jugadors.add(h2);
+        jugadors.add(w1);
+        jugadors.add(w2);
+        jugadors.add(a1);
+        jugadors.add(a2);
+        jugadors.add(w3);
 
-        equips.add(Barça);
-        equips.add(Valencia);
-        equips.add(Madrid);
-        
+        equips.add(terricoles);
+        equips.add(guerrers);
+        equips.add(aliens);
+
         armes.add(veneno);
+        armes.add(k47);
         armes.add(espada);
         armes.add(latigo);
         armes.add(gafas);
         armes.add(escudo);
         armes.add(molotov);
+
+        for (int i = 0; i < jugadors.size(); i++) // sortear objetos entre los jugadores
+        {
+            int a = (int) (Math.random() * jugadors.size());
+            jugadors.get(a).add(armes.get(i));
+        }
+
     }
 
-    private static void atacar(Player A, Player B) throws rolExceptions{
+    private static void atacar(Player A, Player B) throws rolExceptions {
 
         if (A.getLife() > 0) {
             try {
@@ -851,20 +978,20 @@ public class JocDeRol {
         }
     }
 
-    private static void iniciarBatalla(Player humanoid, Player guerrer, Player alienigena){
+    private static void iniciarBatalla(Player humanoid, Player guerrer, Player alienigena) {
         try {
             System.out.println("\n\n************ ATAC 1 *************");
             atacar(humanoid, alienigena);
             System.out.println("");
-            
+
             System.out.println("************ ATAC 2 *************");
             atacar(guerrer, alienigena);
             System.out.println("");
-            
+
             System.out.println("************ ATAC 3 *************");
             atacar(guerrer, humanoid);
             System.out.println("");
-            
+
             System.out.println("************ ATAC 4 *************");
             atacar(guerrer, humanoid);
             System.out.println("");

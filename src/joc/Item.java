@@ -18,9 +18,9 @@ public class Item {
     private int defenseBonus;
     private Player propietari; // per a cotrolar el jugadors que te l'arma
 
-    public Item(String name, int attatckBonus, int defenseBonus) {
+    public Item(String name, int attackBonus, int defenseBonus) {
         this.name = name;
-        this.attackBonus = attatckBonus;
+        this.attackBonus = attackBonus;
         this.defenseBonus = defenseBonus;    
         this.propietari=null;
     }
@@ -59,13 +59,7 @@ public class Item {
 
     @Override
     public String toString() {
-        String prop = "";
-        if (this.propietari == null)
-            prop = " NADIE";
-        else
-            prop = propietari.getName();
-        
-        return "Objecte: " + name + ", attackBonus=" + attackBonus + ", defenseBonus=" + defenseBonus + ", propietari=" + prop;
+        return "- " + "\033[35m" + name + " :" + "\u001B[0m" + " BA:" + this.attackBonus + " / BD:" + this.defenseBonus;
     }
 
     @Override

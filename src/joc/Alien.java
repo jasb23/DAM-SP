@@ -19,6 +19,10 @@ public class Alien extends Player{
         super(name, attackPoints, defensePoints);
     }
     
+    public Alien(String name, int attackPoints, int defensePoints, int life) {
+        super(name, attackPoints, defensePoints, life);
+    }
+    
     // Sobrecàrrega de mètodes
     @Override
     protected void hit(int attack){

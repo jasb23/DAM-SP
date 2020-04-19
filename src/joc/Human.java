@@ -19,6 +19,9 @@ public class Human extends Player{
         super(name, attackPoints, defensePoints);
     }        
     
+    public Human(String name, int attackPoints, int defensePoints, int life) {
+        super(name, attackPoints, defensePoints, life);
+    } 
     //mètodes
     
 }
